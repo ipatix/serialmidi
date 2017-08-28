@@ -47,9 +47,9 @@ namespace serialmidi
 
                 byte[] patchStart = { 0xF0 };
                 byte[] patchEnd = { 0xF7 };
-                uart.Write(patchBytes, 0, 1);
+                uart.Write(patchStart, 0, 1);
                 uart.Write(patchBytes, 0, patchBytes.Length);
-                uart.Write(patchBytes, 0, 1);
+                uart.Write(patchEnd, 0, 1);
             }
 
             // now read midi and send it to device
