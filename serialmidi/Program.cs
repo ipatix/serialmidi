@@ -41,15 +41,18 @@ namespace serialmidi
 
             if (patchFileName != null)
             {
+                Console.WriteLine("Uploading Patch...");
                 byte[] patchBytes = File.ReadAllBytes(patchFileName);
                 if (patchBytes.Length != 0x1800)
                     throw new Exception("Invalid patch file size (not 0x1800)");
 
                 byte[] patchStart = { 0xF0 };
                 byte[] patchEnd = { 0xF7 };
+
                 uart.Write(patchStart, 0, 1);
                 uart.Write(patchBytes, 0, patchBytes.Length);
                 uart.Write(patchEnd, 0, 1);
+                Console.WriteLine("Done!");
             }
 
             // now read midi and send it to device
@@ -68,13 +71,15 @@ namespace serialmidi
             long currentTick = 0;
             while (true)
             {
+                /*
                 Console.Write("tick: " + currentTick + " | ");
-                int tracksStopped = 0;
                 for (int i = 0; i < midi.midiTracks.Count; i++)
                 {
                     Console.Write(" " + trackEventIndex[i] + "/" + midi.midiTracks[i].midiEvents.Count);
                 }
                 Console.WriteLine();
+                */
+                int tracksStopped = 0;
                 for (int cTrk = 0; cTrk < midi.midiTracks.Count; cTrk++)
                 {
                     csmidi.MidiTrack tr = midi.midiTracks[cTrk];
